@@ -53,19 +53,22 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           final login = loginController.text.trim();
                           final password = passwordController.text.trim();
-                          final error = authStore.login(login, password);
+
+                          final String? error = await authStore.login(login, password);
+
                           if (error != null) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text(error)),
                             );
                             return;
                           }
+
                           GoRouter.of(context).go('/hotels');
                         },
-                        child: const Text('Войти'),
+                        child: Text('Войти'),
                       ),
                     ),
                     const SizedBox(height: 15),

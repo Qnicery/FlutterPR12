@@ -43,59 +43,43 @@ mixin _$AuthStore on _AuthStore, Store {
     return super.currentUser;
   }
 
-  bool _currentUserIsInitialized = false;
-
   @override
   set currentUser(User? value) {
-    _$currentUserAtom.reportWrite(
-      value,
-      _currentUserIsInitialized ? super.currentUser : null,
-      () {
-        super.currentUser = value;
-        _currentUserIsInitialized = true;
-      },
-    );
+    _$currentUserAtom.reportWrite(value, super.currentUser, () {
+      super.currentUser = value;
+    });
   }
 
-  late final _$_AuthStoreActionController = ActionController(
-    name: '_AuthStore',
+  late final _$registerAsyncAction = AsyncAction(
+    '_AuthStore.register',
     context: context,
   );
 
   @override
-  String? register(String name, String email, String password) {
-    final _$actionInfo = _$_AuthStoreActionController.startAction(
-      name: '_AuthStore.register',
+  Future<String?> register(String name, String email, String password) {
+    return _$registerAsyncAction.run(
+      () => super.register(name, email, password),
     );
-    try {
-      return super.register(name, email, password);
-    } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
-    }
   }
 
-  @override
-  String? login(String login, String password) {
-    final _$actionInfo = _$_AuthStoreActionController.startAction(
-      name: '_AuthStore.login',
-    );
-    try {
-      return super.login(login, password);
-    } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
-    }
-  }
+  late final _$loginAsyncAction = AsyncAction(
+    '_AuthStore.login',
+    context: context,
+  );
 
   @override
-  void logout() {
-    final _$actionInfo = _$_AuthStoreActionController.startAction(
-      name: '_AuthStore.logout',
-    );
-    try {
-      return super.logout();
-    } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
-    }
+  Future<String?> login(String login, String password) {
+    return _$loginAsyncAction.run(() => super.login(login, password));
+  }
+
+  late final _$logoutAsyncAction = AsyncAction(
+    '_AuthStore.logout',
+    context: context,
+  );
+
+  @override
+  Future<void> logout() {
+    return _$logoutAsyncAction.run(() => super.logout());
   }
 
   @override

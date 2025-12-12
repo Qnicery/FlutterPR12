@@ -75,7 +75,7 @@ class RegisterScreen extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             final name = nameController.text.trim();
                             final email = emailController.text.trim();
                             final pass = passwordController.text.trim();
@@ -97,7 +97,8 @@ class RegisterScreen extends StatelessWidget {
                               );
                               return;
                             }
-                            final error = authStore.register(name, email, pass);
+                            final String? error = await authStore.register(name, email, pass);
+
                             if (error != null) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text(error)),
