@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import '/features/hotels/screens/add_review_screen.dart';
 import '/features/hotels/screens/faq_screen.dart';
 import '/features/hotels/screens/favorite_screen.dart';
@@ -11,6 +13,7 @@ import '/features/hotels/stores/booking_form_store.dart';
 import '/features/hotels/stores/favorites_store.dart';
 import '/features/hotels/stores/review_store.dart';
 import '/features/hotels/screens/hotels_screen.dart';
+import 'features/hotels/models/booking.dart';
 import 'features/hotels/models/hotel.dart';
 import 'features/hotels/screens/booking_screen.dart';
 import 'features/hotels/screens/history_screen.dart';
@@ -26,7 +29,13 @@ import 'features/hotels/stores/hotels_store.dart';
 
 final getIt = GetIt.instance;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+  Hive.registerAdapter(BookingAdapter());
+  await Hive.openBox<Booking>('booking_box');
+
   getIt.registerLazySingleton(() => AuthStore());
   getIt.registerLazySingleton(() => BookingStore());
   getIt.registerLazySingleton(() => HotelsStore());
@@ -35,6 +44,7 @@ void main() {
   getIt.registerLazySingleton(() => AddReviewStore());
   getIt.registerLazySingleton(() => FavoritesStore());
   getIt.registerLazySingleton(() => FaqStore());
+  await getIt<BookingStore>().loadBookings();
   runApp(const MyApp());
 }
 

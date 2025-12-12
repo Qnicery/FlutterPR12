@@ -27,21 +27,24 @@ mixin _$BookingStore on _BookingStore, Store {
     });
   }
 
-  late final _$_BookingStoreActionController = ActionController(
-    name: '_BookingStore',
+  late final _$loadBookingsAsyncAction = AsyncAction(
+    '_BookingStore.loadBookings',
     context: context,
   );
 
   @override
-  void addBooking(Booking booking) {
-    final _$actionInfo = _$_BookingStoreActionController.startAction(
-      name: '_BookingStore.addBooking',
-    );
-    try {
-      return super.addBooking(booking);
-    } finally {
-      _$_BookingStoreActionController.endAction(_$actionInfo);
-    }
+  Future<void> loadBookings() {
+    return _$loadBookingsAsyncAction.run(() => super.loadBookings());
+  }
+
+  late final _$addBookingAsyncAction = AsyncAction(
+    '_BookingStore.addBooking',
+    context: context,
+  );
+
+  @override
+  Future<void> addBooking(Booking booking) {
+    return _$addBookingAsyncAction.run(() => super.addBooking(booking));
   }
 
   @override

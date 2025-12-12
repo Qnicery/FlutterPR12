@@ -19,6 +19,8 @@ dependencies:
   mobx: ^2.5.0
   flutter_mobx: ^2.3.0
   shared_preferences: ^2.2.0
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
 
 
 dev_dependencies:
@@ -26,8 +28,9 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^5.0.0
-  build_runner: ^2.6.0
+  build_runner: ^2.7.0
   mobx_codegen: ^2.7.4
+
 
 flutter:
   uses-material-design: true
